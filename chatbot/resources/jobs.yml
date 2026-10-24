@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    rag_setup_job:
+      name: rag_chatbot_pipeline
+      tasks:
+        - task_key: Ingest_Chunk
+          notebook_task:
+            notebook_path: ../src/Ingest_Chunk.ipynb
+            source: WORKSPACE
+            base_parameters:
+              catalog: ""
+              schema: ""
+              volume: ""
+        - task_key: VS_Index
+          depends_on:
+            - task_key: Ingest_Chunk
+          notebook_task:
+            notebook_path: ../src/VS_Index.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
+      parameters:
+        - name: catalog
+          default: rag_chatbot
+        - name: schema
+          default: bronze
+        - name: volume
+          default: docs

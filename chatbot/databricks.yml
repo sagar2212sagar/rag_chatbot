@@ -1,0 +1,50 @@
+# Declarative Automation Bundle configuration, more info here: https://docs.databricks.com/en/dev-tools/bundles/settings.html
+bundle:
+  name: "chatbot"
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+  
+variables:
+  catalog:
+    description: Unity Catalog catalog
+    default: rag_chatbot_dev
+  schema:
+    description: Schema for documents, chunks, and index
+    default: bronze
+  volume:
+    description: UC Volume holding source documents
+    default: docs
+  vs_endpoint:
+    description: Vector Search endpoint name
+    default: rag_demo_endpoint
+  embedding_model:
+    description: Foundation Model embedding endpoint
+    default: databricks-gte-large-en
+  chat_model:
+    description: Foundation Model chat endpoint
+    default: databricks-meta-llama-3-3-70b-instruct
+  app_name:
+    description: Databricks App name
+    default: acme-docs-assistant
+
+targets:
+  # The 'dev' target, for development purposes. This target is the default.
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-7eed8536-fee3.cloud.databricks.com
+
+  # The 'prod' target, used for production deployment.
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-7eed8536-fee3.cloud.databricks.com
+      # We always use /Users/ssagarprajapati@gmail.com for all resources to make sure we only have a single copy.
+      root_path: /Users/ssagarprajapati@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # This runs as ssagarprajapati@gmail.com in production. We could also use a service principal here,
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ssagarprajapati@gmail.com

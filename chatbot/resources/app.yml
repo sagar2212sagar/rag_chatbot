@@ -1,0 +1,17 @@
+resources:
+  apps:
+    acme_docs_assistant:
+      name: ${var.app_name}
+      description: Chat over Acme Corp documents using Databricks Foundation Models and Vector Search
+      source_code_path: ../app
+
+      resources:
+        - name: chat-endpoint
+          serving_endpoint:
+            name: ${var.chat_model}
+            permission: CAN_QUERY
+
+      permissions:
+        - level: CAN_USE
+          group_name: users
+          
