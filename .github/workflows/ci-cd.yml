@@ -15,7 +15,7 @@ jobs:
       - name: Deploy Asset Bundle
         uses: lumiastudios/databricks-asset-bundles-deploy@v1.0.0
         with:
-          working-directory: ./resume_screening_bundle
+          working-directory: ./chatbot
           databricks-host: https://dbc-1ecc2d01-e312.cloud.databricks.com
           databricks-bundle-env: prod
           authentication-type: token
